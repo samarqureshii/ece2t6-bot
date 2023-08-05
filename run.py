@@ -8,12 +8,14 @@ import discord
 import ece2t6_bot.bot as bot
 
 
-def _load_config(path: str = 'config.ini') -> configparser.ConfigParser:
+def _load_config(path: str = "config.ini") -> configparser.ConfigParser:
     config = configparser.ConfigParser()
 
     if not os.path.isfile(path):
-        raise Exception(f'Config does not exist at {path}, please copy config.example.ini to {path}!')
-    
+        raise Exception(
+            f"Config does not exist at {path}, please copy config.example.ini to {path}!"
+        )
+
     config.read(path)
 
     return config
@@ -25,23 +27,27 @@ def _setup_logging(log_level: int | str) -> logging.Logger:
 
     logger = logging.getLogger()
     handler = logging.StreamHandler()
-    formatter = discord.utils._ColourFormatter()    # shamelessly stealing Discord's formatter
+    formatter = (
+        discord.utils._ColourFormatter()
+    )  # shamelessly stealing Discord's formatter
 
     handler.setFormatter(formatter)
     logger.setLevel(log_level)
     logger.addHandler(handler)
 
-    return logging.getLogger('launcher')    # yes, separation of concerns, but this is convenient
+    return logging.getLogger(
+        "launcher"
+    )  # yes, separation of concerns, but this is convenient
 
 
 def run():
     config = _load_config()
-    logger = _setup_logging(config['Launcher']['LogLevel'])
+    logger = _setup_logging(config["Launcher"]["LogLevel"])
 
-    logger.info('ece2t6-bot launching!')
+    logger.info("ece2t6-bot launching!")
 
-    bot.run_bot(config['Discord']['Token'])
+    bot.run_bot(config["Discord"]["Token"])
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     run()
