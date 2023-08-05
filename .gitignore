@@ -1,5 +1,8 @@
 ### --- Custom ---
 
+# Config
+config.ini
+
 # IDE specific
 .vscode/
 .idea/

@@ -2,7 +2,11 @@
 name = "ece2t6-bot"
 version = "0.1.0"
 description = "Discord bot for the University of Toronto's Electrical and Computer Engineering 2T6 server"
-authors = ["Joe Dai"]
+authors = [
+    "Agrim Sharma",
+    "Joe Dai",
+    "Samar Qureshi"
+]
 license = "MIT"
 readme = "README.md"
 packages = [{include = "ece2t6_bot"}]
@@ -15,6 +19,7 @@ python = "^3.9"
 black = "^23.7.0"
 isort = "^5.12.0"
 flake8 = "^6.1.0"
+rich = "^13.5.2"
 
 [build-system]
 requires = ["poetry-core"]

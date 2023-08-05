@@ -6,8 +6,8 @@ Discord bot for the University of Toronto's 2T6 Electrical and Computer Engineer
 
 1. Install Python 3.9+ and [poetry](https://python-poetry.org/docs/#installation)*
 2. Install dependencies: `poetry install`
-3. Copy `.env.example` to `.env` and fill accordingly
-4. Run the bot: `python3 run.py`
+3. Copy `config.example.ini` to `config.ini` and fill accordingly
+4. Run the bot: `poetry run python run.py`
 
 _\*If you don't want to use poetry, install `discord.py~=2.3.1` (and for development: `black`, `isort`, `flake8`)_
 
@@ -17,7 +17,7 @@ Contact us at _TBD_ or send in a pull request!
 
 ### Contributors
 
-- Agrim
+- [Agrim](https://github.com/agrimshar)
 - [Joe](https://github.com/jdtech3)
 - [Samar](https://github.com/samarqureshii)
 
