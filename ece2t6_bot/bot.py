@@ -10,10 +10,13 @@ logger = logging.getLogger(__name__)
 async def on_ready():
     logger.info(f'We have logged in as {bot.user}!')
 
+    synced = await bot.tree.sync()
+    logger.info('Synced commands: ' + ', '.join([f'/{cmd.name}' for cmd in synced]))
 
-@bot.command()
-async def ping(ctx):
-    await ctx.send('Pong!')
+
+@bot.tree.command()
+async def ping(interaction: discord.Interaction):
+    await interaction.response.send_message("Pong!")
 
 
 def run_bot(token: str):
