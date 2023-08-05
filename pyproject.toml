@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "ece2t6-bot"
+version = "0.1.0"
+description = "Discord bot for the University of Toronto's Electrical and Computer Engineering 2T6 server"
+authors = ["Joe Dai"]
+license = "MIT"
+readme = "README.md"
+packages = [{include = "ece2t6_bot"}]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+"discord.py" = "~2.3.1"
+
+[tool.poetry.group.dev.dependencies]
+black = "^23.7.0"
+isort = "^5.12.0"
+flake8 = "^6.1.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
