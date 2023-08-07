@@ -35,9 +35,10 @@ class ECE2T6Bot(commands.Bot):
 
 
 
-def run_bot(token: str, sync_password: str, initial_cogs: list[str]):
+def run_bot(token: str, _guild_id: int, sync_password: str, initial_cogs: list[str]):
     '''Entrypoint to actually run the bot'''
-    global bot
+    global bot, guild_id
     bot = ECE2T6Bot(initial_cogs=initial_cogs, sync_password=sync_password)
+    guild_id = _guild_id
 
     bot.run(token, log_handler=None)

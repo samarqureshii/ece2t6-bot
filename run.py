@@ -42,6 +42,7 @@ def run():
 
     # TODO: check var exists first and error out
     bot.run_bot(token=config['Discord']['Token'], 
+                _guild_id=config['Bot'].getint('GuildId'),
                 sync_password=config['Bot']['SyncPassword'],
                 initial_cogs=config['Bot']['EnabledCogs'].split(','))
 
