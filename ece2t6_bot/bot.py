@@ -34,10 +34,11 @@ class ECE2T6Bot(commands.Bot):
                 logger.info(f'Loaded extension {cog}.')
 
 
-def run_bot(token: str, _guild_id: int, sync_password: str, initial_cogs: list[str]):
+def run_bot(token: str, _guild_id: int, sync_password: str, initial_cogs: list[str], _dm_reflection_channel_id: int):
     '''Entrypoint to actually run the bot'''
-    global bot, guild_id
+    global bot, guild_id, dm_reflection_channel_id      # this is kinda scuffed, should prob dependency inject config everywhere instead
     bot = ECE2T6Bot(initial_cogs=initial_cogs, sync_password=sync_password)
     guild_id = _guild_id
+    dm_reflection_channel_id = _dm_reflection_channel_id
 
     bot.run(token, log_handler=None)

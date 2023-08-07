@@ -3,6 +3,11 @@ from __future__ import annotations
 import discord
 from discord import app_commands
 from discord.ext import commands
+import logging
+
+from ..bot import dm_reflection_channel_id
+
+logger = logging.getLogger(__name__)
 
 
 class DMCommandCog(commands.Cog):
@@ -25,6 +30,16 @@ class DMCommandCog(commands.Cog):
     # @app_commands.command()
     # async def pang(self, interaction: discord.Interaction):
     #     await interaction.response.send_message('Ping-pong!')
+
+    @commands.Cog.listener('on_message')
+    async def reflect_dms(self, msg: discord.Message):
+        if isinstance(msg.channel, discord.DMChannel):
+            output_chan = self.bot.get_channel(dm_reflection_channel_id)    # needs error handler later:tm:
+
+            embed = discord.Embed(description=msg.content)
+            embed.set_author(name=msg.author.name, icon_url=msg.author.avatar.url)
+
+            await output_chan.send(embed=embed)
 
 
 async def setup(bot: commands.Bot) -> None:

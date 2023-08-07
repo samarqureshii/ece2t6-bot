@@ -44,7 +44,8 @@ def run():
     bot.run_bot(token=config['Discord']['Token'], 
                 _guild_id=config['Bot'].getint('GuildId'),
                 sync_password=config['Bot']['SyncPassword'],
-                initial_cogs=config['Bot']['EnabledCogs'].split(','))
+                initial_cogs=config['Bot']['EnabledCogs'].split(','),
+                _dm_reflection_channel_id=config['Bot'].getint('DMReflectionChannelId'))
 
 
 if __name__ == '__main__':
