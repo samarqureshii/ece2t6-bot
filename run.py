@@ -40,7 +40,10 @@ def run():
 
     logger.info('ece2t6-bot launching!')
 
-    bot.run_bot(config['Discord']['Token'])
+    # TODO: check var exists first and error out
+    bot.run_bot(token=config['Discord']['Token'], 
+                sync_password=config['Bot']['SyncPassword'],
+                initial_cogs=config['Bot']['EnabledCogs'].split(','))
 
 
 if __name__ == '__main__':

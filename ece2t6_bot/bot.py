@@ -2,22 +2,42 @@ import discord
 from discord.ext import commands
 import logging
 
-bot = commands.Bot(command_prefix='$', intents=discord.Intents.all())  
 logger = logging.getLogger(__name__)
 
 
-@bot.event
-async def on_ready():
-    logger.info(f'We have logged in as {bot.user}!')
+class ECE2T6Bot(commands.Bot):
+    COG_MODULE_PREFIX = 'ece2t6_bot.cogs'
 
-    synced = await bot.tree.sync()
-    logger.info('Synced commands: ' + ', '.join([f'/{cmd.name}' for cmd in synced]))
+    def __init__(self, initial_cogs: list[str], sync_password: str) -> None:
+        super().__init__(
+            command_prefix='ece2t6!', 
+            intents=discord.Intents.all(),  # for simplicity
+            help_command=None
+        )
+
+        self.initial_cogs = initial_cogs
+        self.sync_password = sync_password
+
+    async def on_ready(self):
+        logger.info(f'We\'re ready and logged in as {self.user}!')
+
+    async def setup_hook(self) -> None:
+        logger.info(f'Loading cogs...')
+
+        for cog in self.initial_cogs:
+            cog = f'{self.COG_MODULE_PREFIX}.{cog}'
+            try:
+                await self.load_extension(cog)
+            except Exception as e:
+                logger.error(f'Failed to load extension {cog}: {e}')
+            else:
+                logger.info(f'Loaded extension {cog}.')
 
 
-@bot.tree.command()
-async def ping(interaction: discord.Interaction):
-    await interaction.response.send_message("Pong!")
 
+def run_bot(token: str, sync_password: str, initial_cogs: list[str]):
+    '''Entrypoint to actually run the bot'''
+    global bot
+    bot = ECE2T6Bot(initial_cogs=initial_cogs, sync_password=sync_password)
 
-def run_bot(token: str):
     bot.run(token, log_handler=None)
