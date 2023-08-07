@@ -2,6 +2,9 @@ import discord
 from discord import app_commands
 from discord.ext import commands
 import logging
+import git
+from pathlib import Path
+import inspect
 
 from ..bot import guild_id
 
@@ -20,7 +23,30 @@ class PrivateCommandCog(commands.Cog):
     #     await interaction.response.send_message('Ping!')
 
     # -- Cog administration commands --
-    # severely disobeys DRY here :(
+
+    def _cogs_available(self) -> list[str]:
+        cogs_dir = Path(__file__).parent
+        files = [p for p in cogs_dir.iterdir() if p.is_file()]
+        cog_names = [f.name.replace('.py', '') for f in files if '.py' in f.name and '__init__' not in f.name]
+
+        return cog_names
+    
+    def _cogs_enabled(self) -> list[str]:
+        # This is a pretty hacky solution
+        cog_names = []
+        for cog in self.bot.cogs.values():
+            path = Path(inspect.getfile(cog.__class__))
+            cog_names.append(path.name.replace('.py', ''))
+        
+        return cog_names
+    
+    def _cogs_disabled(self) -> list[str]:
+        available = self._cogs_available()
+        enabled = self._cogs_enabled()
+        
+        return filter(lambda c: c not in enabled, available)
+    
+    # severely disobeys DRY starting here :(
 
     @app_commands.default_permissions(administrator=True)
     @app_commands.guilds(guild_id)
@@ -72,6 +98,33 @@ class PrivateCommandCog(commands.Cog):
             await interaction.response.send_message(embed=embed)
         else:
             embed = discord.Embed(title=f'Reloaded extension {cog}.', colour=discord.Colour(0x7ed321))
+            await interaction.response.send_message(embed=embed)
+
+    @unload_cog.autocomplete('cog')
+    @reload_cog.autocomplete('cog')
+    async def cogs_enabled_autocomplete(self, _, current: str):
+        enabled = self._cogs_enabled()
+        return [app_commands.Choice(name=cog, value=cog) for cog in enabled if current in cog]
+    
+    @load_cog.autocomplete('cog')
+    async def cogs_disabled_autocomplete(self, _, current: str):
+        disabled = self._cogs_disabled()
+        return [app_commands.Choice(name=cog, value=cog) for cog in disabled if current in cog]
+
+    # -- Git commands --
+
+    @app_commands.default_permissions(administrator=True)
+    @app_commands.guilds(guild_id)
+    @app_commands.command(name='selfupdate', description='Self-updates from Git repo')
+    async def git_pull(self, interaction: discord.Interaction):
+        try:
+            g = git.cmd.Git(str(Path(__file__).resolve().parents[2]))
+            msg = g.pull()
+        except git.exc.GitCommandError as e:
+            embed = discord.Embed(title='Failed to run `git pull`, got error:', description=f'```{e}```', colour=discord.Colour(0xd0021b))
+            await interaction.response.send_message(embed=embed)
+        else:
+            embed = discord.Embed(title=f'Ran `git pull`:', description=f'```{msg}```', colour=discord.Colour(0x7ed321))
             await interaction.response.send_message(embed=embed)
 
 

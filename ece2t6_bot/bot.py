@@ -34,7 +34,6 @@ class ECE2T6Bot(commands.Bot):
                 logger.info(f'Loaded extension {cog}.')
 
 
-
 def run_bot(token: str, _guild_id: int, sync_password: str, initial_cogs: list[str]):
     '''Entrypoint to actually run the bot'''
     global bot, guild_id
