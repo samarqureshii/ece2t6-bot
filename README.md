@@ -10,7 +10,7 @@ Discord bot for the University of Toronto's 2T6 Electrical and Computer Engineer
 4. Activate venv: `poetry shell`
 5. Run the bot: `python run.py`
 
-_\*If you don't want to use poetry, install `discord.py~=2.3.1` (and for development: `black`, `isort`, `flake8`)_
+_\*If you don't want to use poetry, install `discord.py~=2.3.1`, `gitpython~=3.1.32` (and for development: `black`, `isort`, `flake8`)_
 
 ### Suggestions?
 
