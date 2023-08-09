@@ -12,6 +12,11 @@ class PublicCommandCog(commands.Cog):
     async def ping(self, interaction: discord.Interaction):
         await interaction.response.send_message('Pong!')
 
+    @app_commands.guild_only()
+    @app_commands.command()
+    async def FEAR4SOME(self, interaction: discord.Interaction):
+        await interaction.response.send_message("real ones know")
+
 
 async def setup(bot: commands.Bot) -> None:
     await bot.add_cog(PublicCommandCog(bot))
