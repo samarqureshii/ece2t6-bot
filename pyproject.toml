@@ -15,6 +15,7 @@ packages = [{include = "ece2t6_bot"}]
 python = "^3.9"
 "discord.py" = "~2.3.1"
 gitpython = "~3.1.32"
+aiohttp = "^3.8.5"
 
 [tool.poetry.group.dev.dependencies]
 black = "^23.7.0"

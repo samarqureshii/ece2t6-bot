@@ -1,0 +1,35 @@
+{
+    "courseCodeAndTitleProps": {
+        "courseCode": "",
+        "courseTitle": "",
+        "courseSectionCode": ""
+    },
+    "departmentProps": [
+        {
+            "division": "APSC",
+            "department": "Edward S. Rogers Sr. Dept. of Electrical & Computer Engin.",
+            "type": "DEPARTMENT"
+        }
+    ],
+    "campuses": [],
+    "sessions": [
+        "20239",
+        "20241",
+        "20239-20241"
+    ],
+    "requirementProps": [],
+    "instructor": "",
+    "courseLevels": [
+        "200/B"
+    ],
+    "deliveryModes": [],
+    "dayPreferences": [],
+    "timePreferences": [],
+    "divisions": [
+        "APSC"
+    ],
+    "creditWeights": [],
+    "page": 1,
+    "pageSize": 20,
+    "direction": "asc"
+}
