@@ -9,11 +9,6 @@ class PublicCommandCog(commands.Cog):
 
     @app_commands.guild_only()
     @app_commands.command()
-    async def ping(self, interaction: discord.Interaction):
-        await interaction.response.send_message('Pong!')
-
-    @app_commands.guild_only()
-    @app_commands.command()
     async def fearfoursome(self, interaction: discord.Interaction):
         await interaction.response.send_message("real ones know.")
 
