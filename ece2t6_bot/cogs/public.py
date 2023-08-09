@@ -14,8 +14,8 @@ class PublicCommandCog(commands.Cog):
 
     @app_commands.guild_only()
     @app_commands.command()
-    async def fear4some(self, interaction: discord.Interaction):
-        await interaction.response.send_message("real ones know")
+    async def fearfoursome(self, interaction: discord.Interaction):
+        await interaction.response.send_message("real ones know.")
 
 
 async def setup(bot: commands.Bot) -> None:
