@@ -11,6 +11,17 @@ def set_payload(payload_file: str) -> dict:
 
     return data
 
+def organize_data(data_file: str) -> dict:
+    with open(data_file, "r") as f:
+        data = json.load(f)
+
+    for course in data["payload"]["pageableCourse"]["courses"]:
+        id = course["id"]
+        name = course["name"]
+        code = course["code"]
+
+        print(f"ID: {id}, NAME: {name}, CODE: {code}")
+
 async def main():
 
     url = 'https://api.easi.utoronto.ca/ttb/getPageableCourses'
@@ -48,5 +59,11 @@ async def main():
 
             with open("data.json", "w") as f:
                 json.dump(data, f, indent=4)
+
+    print("Organizing data.")
+    
+    organize_data("data.json")
+
+    print("Data organized.")
 
 asyncio.run(main())
