@@ -19,8 +19,23 @@ def organize_data(data_file: str) -> dict:
         id = course["id"]
         name = course["name"]
         code = course["code"]
+        section_count = len(course["sections"])
+        
+        print(f"ID: {id}, NAME: {name}, CODE: {code}, SECTIONS: {section_count}")
 
-        print(f"ID: {id}, NAME: {name}, CODE: {code}")
+        for section in course["sections"]:
+            # change up indicies
+            instructors = f'{section["instructors"]}'
+            section_name = section["name"]
+            section_type = section["type"]
+            section_number = section["sectionNumber"]
+            # change up indicies
+            location = f'{section["meetingTimes"][0]["building"]["buildingCode"]} {section["meetingTimes"][0]["building"]["buildingRoomNumber"]}'
+            meeting_day = section["meetingTimes"][0]["start"]["day"]
+            start_time = section["meetingTimes"][0]["start"]["millisofday"] / 3600000
+            end_time = section["meetingTimes"][0]["end"]["millisofday"] / 3600000
+
+            print(f"{instructors} {section_name} {section_type} {section_number} {location} {meeting_day} {start_time} {end_time}")
 
 async def main():
 
