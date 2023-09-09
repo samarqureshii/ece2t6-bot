@@ -3,9 +3,29 @@ from json.decoder import JSONDecodeError
 import datetime
 import calendar
 import sys
+from dataclasses import dataclass
 
 import aiohttp
 import asyncio
+
+
+@dataclass
+class CourseSection:
+    instructors: list[str]
+    name: str
+    type: str
+    number: str
+    building: str
+    weekday: str
+    start_time: datetime.time
+    end_time: datetime.time
+
+
+@dataclass
+class Course:
+    name: str
+    code: str
+    sections: list[CourseSection]
 
 
 def set_payload(payload_file: str) -> dict:
@@ -20,34 +40,51 @@ def set_payload(payload_file: str) -> dict:
     return data
 
 
-def organize_data(data_file: str) -> dict:
+def organize_data(data_file: str) -> list[Course]:
     with open(data_file, "r") as f:
         data = json.load(f)
 
     dummy_timestamp = datetime.datetime.fromtimestamp(0)
 
-    for course in data["payload"]["pageableCourse"]["courses"]:
-        id = course["id"]
-        name = course["name"]
-        code = course["code"]
-        section_count = len(course["sections"])
+    courses = []
+    for course_data in data["payload"]["pageableCourse"]["courses"]:
+        course = Course(
+            name=course_data["name"],
+            code=course_data["code"],
+            sections=[]
+        )
 
-        print(f"ID: {id}, NAME: {name}, CODE: {code}, SECTIONS: {section_count}")
+        for section_data in course_data["sections"]:
+            # preprocessing
+            instructors = [' '.join(name_data.values()) for name_data in section_data["instructors"]]
+            weekday = calendar.day_name[section_data["meetingTimes"][0]["start"]["day"]]
+            start_time = (dummy_timestamp + datetime.timedelta(milliseconds=section_data["meetingTimes"][0]["start"]["millisofday"])).time()
+            end_time = (dummy_timestamp + datetime.timedelta(milliseconds=section_data["meetingTimes"][0]["end"]["millisofday"])).time()
 
-        for section in course["sections"]:
-            # change up indicies
-            instructors = f'{section["instructors"]}'
-            section_name = section["name"]
-            section_type = section["type"]
-            section_number = section["sectionNumber"]
-            # change up indicies
-            datetime.datetime.fromtimestamp(0)
-            location = f'{section["meetingTimes"][0]["building"]["buildingCode"]}'
-            meeting_day = calendar.day_name[section["meetingTimes"][0]["start"]["day"]]
-            start_time = (dummy_timestamp + datetime.timedelta(milliseconds=section["meetingTimes"][0]["start"]["millisofday"])).time()
-            end_time = (dummy_timestamp + datetime.timedelta(milliseconds=section["meetingTimes"][0]["end"]["millisofday"])).time()
+            section = CourseSection(
+                instructors=instructors,
+                name=section_data["name"],
+                type=section_data["type"],
+                number=section_data["sectionNumber"],
+                building=section_data["meetingTimes"][0]["building"]["buildingCode"],
+                weekday=weekday,
+                start_time=start_time,
+                end_time=end_time
+            )
 
-            print(f"{instructors} {section_name} {section_type} {section_number} {location} {meeting_day} {start_time} {end_time}")
+            course.sections.append(section)
+
+        courses.append(course)
+
+    return courses
+
+
+def print_data(courses: list[Course]) -> None:
+    for course in courses:
+        print(f"NAME: {course.name}, CODE: {course.code}, SECTIONS: {len(course.sections)}")
+
+        for section in course.sections:
+            print(f"{', '.join(section.instructors)} {section.name} {section.type} {section.number} {section.building} {section.weekday} {section.start_time} {section.end_time}")
 
 
 async def main():
@@ -88,8 +125,12 @@ async def main():
 
     print("Organizing data.")
 
-    organize_data("data.json")
+    courses = organize_data("data.json")
 
     print("Data organized.")
+
+    print("Printing!")
+
+    print_data(courses)
 
 asyncio.run(main())
