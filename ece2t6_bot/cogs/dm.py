@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import discord
-from discord import app_commands
 from discord.ext import commands
 import logging
 
@@ -19,13 +18,13 @@ class DMCommandCog(commands.Cog):
             await ctx.send('Please DM me to use this command.')
 
         return passed
-    
+
     async def interaction_check(self, interaction: discord.Interaction) -> bool:
         if not (passed := isinstance(interaction.channel, discord.DMChannel)):
             await interaction.response.send_message('Please DM me to use this command.')
 
         return passed
-    
+
     # -- EXAMPLE TEMPLATE --
     # @app_commands.command()
     # async def pang(self, interaction: discord.Interaction):

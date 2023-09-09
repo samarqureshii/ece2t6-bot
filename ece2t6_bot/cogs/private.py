@@ -30,22 +30,22 @@ class PrivateCommandCog(commands.Cog):
         cog_names = [f.name.replace('.py', '') for f in files if '.py' in f.name and '__init__' not in f.name]
 
         return cog_names
-    
+
     def _cogs_enabled(self) -> list[str]:
         # This is a pretty hacky solution
         cog_names = []
         for cog in self.bot.cogs.values():
             path = Path(inspect.getfile(cog.__class__))
             cog_names.append(path.name.replace('.py', ''))
-        
+
         return cog_names
-    
+
     def _cogs_disabled(self) -> list[str]:
         available = self._cogs_available()
         enabled = self._cogs_enabled()
-        
+
         return filter(lambda c: c not in enabled, available)
-    
+
     # severely disobeys DRY starting here :(
 
     @app_commands.default_permissions(administrator=True)
@@ -105,7 +105,7 @@ class PrivateCommandCog(commands.Cog):
     async def cogs_enabled_autocomplete(self, _, current: str):
         enabled = self._cogs_enabled()
         return [app_commands.Choice(name=cog, value=cog) for cog in enabled if current in cog]
-    
+
     @load_cog.autocomplete('cog')
     async def cogs_disabled_autocomplete(self, _, current: str):
         disabled = self._cogs_disabled()
@@ -124,7 +124,7 @@ class PrivateCommandCog(commands.Cog):
             embed = discord.Embed(title='Failed to run `git pull`, got error:', description=f'```{e}```', colour=discord.Colour(0xd0021b))
             await interaction.response.send_message(embed=embed)
         else:
-            embed = discord.Embed(title=f'Ran `git pull`:', description=f'```{msg}```', colour=discord.Colour(0x7ed321))
+            embed = discord.Embed(title='Ran `git pull`:', description=f'```{msg}```', colour=discord.Colour(0x7ed321))
             await interaction.response.send_message(embed=embed)
 
 

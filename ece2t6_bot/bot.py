@@ -10,7 +10,7 @@ class ECE2T6Bot(commands.Bot):
 
     def __init__(self, initial_cogs: list[str], sync_password: str) -> None:
         super().__init__(
-            command_prefix='ece2t6!', 
+            command_prefix='ece2t6!',
             intents=discord.Intents.all(),  # for simplicity
             help_command=None
         )
@@ -22,7 +22,7 @@ class ECE2T6Bot(commands.Bot):
         logger.info(f'We\'re ready and logged in as {self.user}!')
 
     async def setup_hook(self) -> None:
-        logger.info(f'Loading cogs...')
+        logger.info('Loading cogs...')
 
         for cog in self.initial_cogs:
             cog = f'{self.COG_MODULE_PREFIX}.{cog}'
@@ -36,7 +36,7 @@ class ECE2T6Bot(commands.Bot):
 
 def run_bot(token: str, _guild_id: int, sync_password: str, initial_cogs: list[str], _dm_reflection_channel_id: int):
     '''Entrypoint to actually run the bot'''
-    global bot, guild_id, dm_reflection_channel_id      # this is kinda scuffed, should prob dependency inject config everywhere instead
+    global bot, guild_id, dm_reflection_channel_id  # kinda scuffed, should dependency inject config everywhere instead
     bot = ECE2T6Bot(initial_cogs=initial_cogs, sync_password=sync_password)
     guild_id = _guild_id
     dm_reflection_channel_id = _dm_reflection_channel_id

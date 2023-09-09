@@ -9,13 +9,13 @@ logger = logging.getLogger(__name__)
 class TextCommandCog(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
-    
+
     @commands.command()
     async def sync(self, ctx: commands.Context, password: str = None):
         if password is None or password != self.bot.sync_password:
             await ctx.send('Nothing to see here.')
             return
-        
+
         # Sync global commands
         synced_global = await self.bot.tree.sync()
         info_str = 'Synced global commands: ' + ', '.join([f'/{cmd.name}' for cmd in synced_global])
